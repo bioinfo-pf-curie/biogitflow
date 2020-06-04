@@ -1,0 +1,13 @@
+version-1.2.1
+
+    BUG FIXES
+        [BUGFIX] segfault corrected
+
+    NEW FEATURES
+        [MODIF] optimization of the sort function
+        [DOC] update of the end-user documentation
+
+version-1.2.0
+
+    NEW FEATURES
+        [MODIF] use of GRCh38 reference genome
