@@ -41,7 +41,18 @@ The documentation consists of three main sections:
     - The :ref:`hotfix-technical` details all the actions and command lines step-by-step,
     - The :ref:`hotfix-synopsis` summarizes the technical actions.
 
+
+Useful resources
+================
+
 Useful resources for `biogitflow` are available here:
 
 - |biogitflowdoc|_
 - |biogitflowtemplate|_
+- |biogitflowdocsource|_
+
+Cite us
+=======
+
+|biogitflowcitation|_
+

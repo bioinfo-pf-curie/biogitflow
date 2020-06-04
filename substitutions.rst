@@ -40,6 +40,12 @@
 .. |soft| replace:: bioinformatics pipeline
 .. |gitlabissue| replace:: GitLab issue
 
+.. |biogitflowdocsource| replace:: source of the biogitflow documentation
+.. _biogitflowdocsource: https://github.com/bioinfo-pf-curie/biogitflow
+
+.. |biogitflowcitation| replace:: Reference to cite biogitflow.
+.. _biogitflowcitation: https://github.com/bioinfo-pf-curie/biogitflow#citation
+
 .. |biogitflowdoc| replace:: biogitflow documentation
 .. _biogitflowdoc: https://biogitflow.readthedocs.io
 
