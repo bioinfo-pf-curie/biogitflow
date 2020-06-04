@@ -37,27 +37,27 @@ First, the developers has to clone a project from the |repo|:
 
 ``git clone`` |gitprojecturl|_
 
-It may ask you for your login and password but this can be avoided if you declare by `Adding an SSH key to your GitLab account <https://docs.gitlab.com/ce/ssh/#adding-an-ssh-key-to-your-gitlab-account>`_.
+It may ask you for your login and password but this can be avoided by `Adding an SSH key to your GitLab account <https://docs.gitlab.com/ce/ssh/#adding-an-ssh-key-to-your-gitlab-account>`_.
 
 
 Organisation
 ~~~~~~~~~~~~
 
-The |wks| is divided in the areas:
+The |wks| is divided into three areas:
 
 1. the **working tree** is the tree with all the files that are visible with the standard ``ls`` command. This is where the developer will modify the code.
 
-2. the **staging area** or **index** is where git stores the list of files that will be sent with the next  ``git commit`` commit.
+2. the **staging area** or **index** is where git stores the list of files that will be sent with the next  ``git commit`` command.
 
 3. the **commit area** contains the history of the ``commit`` (some of them maybe available only locally) from the current ``HEAD``.
 
-The command ``git add`` transfers a file from the working tree to the staging area.
+The command ``git add`` transfers a file from the **working tree** to the **staging area**.
 
 .. tip::
 
    All the files that are not supposed to be versionned can be listed in the ``.gitignore`` file.
 
-The command ``git commit -m "[MODIF] new algorithm added (Issue #10)"`` transfers the files from the staging area to the commit area. So far, all the modified files are only present on the |wks|. We will see in what follows how to push them on the remote repository.
+The command ``git commit -m "[MODIF] new algorithm added (Issue #10)"`` transfers the files from the **staging area** to the **commit area**. So far, all the modified files are only present on the |wks|. We will see in what follows how to push them on the remote repository.
 
 
 Commands to cancel some actions
@@ -82,19 +82,17 @@ In order to cancel the actions that have been performed in the |wks|, the comman
 
 Example of reset commands:
 
--  ``git reset --soft HEAD^`` # cancel the last commit
+-  ``git reset --soft HEAD^`` cancels the last commit
 
 -  ``git reset --soft`` is the inverse of  ``git commit`` (while the commit has not been pushed on the remote repository)
 
--  ``git reset --mixed HEAD^`` # cancel the last (like ``--soft``) and delete the files from the staging area
+-  ``git reset --mixed HEAD^`` cancels the last (like ``--soft``) and delete the files from the staging area
 
 -  ``git reset --mixed`` is the inverse of ``git add``
 
--  A typical use case of the command ``git reset --mixed`` is to delete a file that has been added by error in the staging area:
+-  A typical use case of the command ``git reset --mixed`` is to delete a file that has been added by error in the staging area: ``git reset --mixed my-file-not-to-be-committed``
 
--  ``git reset --mixed my-file-not-to-be-committed``
-
--  ``git reset --hard HEAD^`` reset all the file from the |wks| to the version before the current ``HEAD`` (some modifications might be lost)
+-  ``git reset --hard HEAD^`` resets all the files from the |wks| to the version before the current ``HEAD`` (some modifications might be lost)
 
 
 .. note::
@@ -209,9 +207,9 @@ Useful commands
 
       Add as many `^` as you want to step back (``HEAD^^^``)
 
-   -  Difference between two specific commits:
+-  Difference between two specific commits:
 
-      ``git diff <commit_1> <commit_2> <file>``
+   ``git diff <commit_1> <commit_2> <file>``
 
 -  Information about the last commit in the commit area:
 
@@ -236,16 +234,17 @@ Useful commands
    ``git branch -vv``
   
 
--  Send a local branch named **foo** in the |wks| into a branch named **bar** in the remote repository:
+- Send a local branch named **foo** in the |wks| into a branch named **bar** in the remote repository:
 
    ``git push origin foo:bar``
 
 - Delete the branch **bar** from the remote repository:
-   ``git push origin :bar``
+  
+  ``git push origin :bar``
 
--  The syntax is generally ``git push origin localname:remote``. When we want to remove something, just leave the localname empty
+- The syntax is generally ``git push origin localname:remote``. When we want to remove something, just leave the localname empty
 
--  Delete files that are not versioned in the |wks| (beware, you can lose data):
+- Delete files that are not versioned in the |wks| (beware, you can lose data):
 
    ``git clean -n`` # dry-run mode
 
@@ -269,15 +268,15 @@ Temporary shelf some modifications
 Imagine that you modified some files but the modifications are not yet completed to be committed. In the meantime, you have to correct some bug on the **hotfix** branch. The command ``stash`` allows you to store your modifications. Otherwise, you will not be able to checkout the **hotfix** branch.
 
 
-``git stash`` # stash the current modifications
+``git stash`` stashes the current modifications
 
-``git stash list`` # list the existing stashes
+``git stash list``  lists the existing stashes
 
-``git stash show my_stash_id`` # details about a stash
+``git stash show my_stash_id`` details information about a stash
 
-``git stash apply my_stash_id`` # restore the modifications from a stash
+``git stash apply my_stash_id`` restores the modifications from a stash
 
-``git stash drop my_stash_id`` # delete a stash
+``git stash drop my_stash_id`` deletes a stash
 
 Rollback
 ~~~~~~~~

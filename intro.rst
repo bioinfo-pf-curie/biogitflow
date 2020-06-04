@@ -42,6 +42,11 @@ The documentation consists of three main sections:
     - The :ref:`hotfix-synopsis` summarizes the technical actions.
 
 
+Prerequisite
+============
+
+All the protocols require that you have set up a |gitlab|_ repository as explained in the section :ref:`gitlab-new-project`.
+
 Useful resources
 ================
 

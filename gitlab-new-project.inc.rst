@@ -14,11 +14,14 @@
 .. |gitlab-newbranch| image:: images/gitlab_newbranch.png
 .. |gitlab-newproject-branch-devel| image:: images/gitlab_newproject_branch_devel.png
 
+
+.. _gitlab-new-project:
+
 Create a new project in Gitlab
 ==============================
 
 
-We recommend that the project is created from the template, if the template does not exist, follow the procedure below.
+We recommend that the project is created from the |biogitflowtemplate|_ or you can follow the procedure below.
 
 Add the new projet
 ------------------

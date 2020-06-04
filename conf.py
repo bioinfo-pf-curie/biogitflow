@@ -47,7 +47,7 @@ master_doc = 'index'
 
 # General information about the project.
 project = u'biogitflow'
-copyright = u'2019, Philippe Hupé'
+copyright = u'2020, Institut Curie.'
 author = u'Philippe Hupé'
 
 # The version info for the project you're documenting, acts as replacement for
@@ -160,7 +160,7 @@ man_pages = [
 # (source start file, target name, title, author,
 #  dir menu entry, description, category)
 texinfo_documents = [
-    (master_doc, 'biogitflow', u'ng-geniac Documentation',
+    (master_doc, 'biogitflow', u'biogitflow Documentation',
      author, 'Philippe Hupé', 'Development workflow protocols for bioinformatics pipelines with git and gitlab',
      'Miscellaneous'),
 ]
