@@ -121,11 +121,11 @@ Create tags
 
 -  add a tag on the last commit (``HEAD``) in the |wks|:
 
-   ``git tag v1.0.0 -m "[TAG] version-1.0.0``
+   ``git tag version-1.0.0 -m "[TAG] version-1.0.0``
 
 -  list the information about a tag:
 
-   ``git show v1.0.0``
+   ``git show version-1.0.0``
 
 -  send the tags into the remote repository:
 
@@ -133,15 +133,15 @@ Create tags
 
 -  delete a tag from the |wks|:
 
-   ``git tag -d v1.0.0``
+   ``git tag -d version-1.0.0``
 
 -  delete a tag from the remote repository:
 
-   ``git push origin :v1.0.0``
+   ``git push origin :version-1.0.0``
 
 -  add a tag on a previous commit:
 
-   ``git tag v1.0.0 -m "[TAG] version-1.0.0" hash_du_commit``
+   ``git tag version-1.0.0 -m "[TAG] version-1.0.0" hash_du_commit``
 
 Configuration
 -------------
