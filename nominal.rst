@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020
+     Copyright Institut Curie 2020-2021
      
      This file is part of the biogitflow documentation.
      
