@@ -211,6 +211,8 @@ During the different steps of the workflow, the deployment of the |soft| is perf
 | :ref:`step4-workflow-overview` | prod            |
 +--------------------------------+-----------------+
 
+.. _devel-workflow-overview-roles:
+
 User roles and permissions
 ==========================
 

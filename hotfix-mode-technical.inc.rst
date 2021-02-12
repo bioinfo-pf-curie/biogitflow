@@ -155,6 +155,8 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
    git commit -m "[DOC] information about the version-1.2.4 after correction of the bug added in the CHANGELOG"
    git push origin hotfix
 
+.. _step3-hotfix-technical:
+
 |step3|
 -------
 
@@ -246,6 +248,8 @@ Once the new release has been validated and the installation in the **valid** en
 
    The script :download:`tag-version4prod.sh <data/tag-version4prod.sh>` checks that the tag name is consitent with what was mentioned in the CHANGELOG and add the tag.
 
+.. _step4-hotfix-technical:
+
 |step4|
 -------
 
@@ -270,6 +274,8 @@ It is likely that the local repository is not up-to-date anymore especially if a
   - The |userm-uvp| tracks all the steps that are performed for the deployment in the production environment (including link or name of datasets that are used).
 
   - The |userm-uvp| fills the |gitlabissue| at each step.
+
+.. _step4-hotfix-deployprod:
 
 |step4-deployprod|
 ~~~~~~~~~~~~~~~~~~

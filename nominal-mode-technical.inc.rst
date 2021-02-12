@@ -223,6 +223,7 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
    git commit -m "[DOC] information about the version-1.2.3 added in the CHANGELOG"
    git push origin devel
 
+.. _step3-nominal-technical:
 
 |step3|
 -------
@@ -273,6 +274,8 @@ The |userm-uvp| deploys the pipeline in the **valid** environment from the **rel
    |dangertag|
 
 At this stage, the current version under development, is deployed in ``/bioinfo/pipelines/foobar/valid`` and the file ``/bioinfo/pipelines/foobar/valid/version`` contains the commit ID that has been deployed.
+
+.. _step3-nominal-testvalid:
 
 |step3-testvalid|
 ~~~~~~~~~~~~~~~~~
@@ -367,6 +370,10 @@ It is likely that the local repository is not up-to-date anymore especially if a
    git status
    git pull
    git branch -vv
+
+
+.. _step4-nominal-deployprod:
+
 
 |step4-deployprod|
 ~~~~~~~~~~~~~~~~~~

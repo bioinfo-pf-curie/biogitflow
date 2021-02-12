@@ -30,6 +30,7 @@ Welcome to biogitflow's documentation!
    git
    gitlab
    operational-testing
+   exercises
    
 Indices and tables
 ==================
