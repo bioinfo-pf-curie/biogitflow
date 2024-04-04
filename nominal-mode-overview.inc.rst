@@ -47,7 +47,7 @@ First we provide an overview of the development workflow in the nominal mode.
 
   - or the end-user does not validate the new release. Thus, the |userd| goes back to :ref:`step1-nominal-overview` to implement the corrections until acceptance by the end-user.
 
-- The |userm-uvp| implements an operational testing in |jenkins|_. The test is named with the name of the |repo| and a suffix **\_DEV** is added (e.g. foobar_DEV). The operational testing is launched.
+- The |userm-uvp| implements an operational testing in |gitlabci|.
 
 |step3|
 -------
@@ -60,7 +60,7 @@ First we provide an overview of the development workflow in the nominal mode.
 
 - The |userm-uvp| checks that the installation is successful.
 
-- The |userm-uvp| implements an operational testing in |jenkins|_. The test is named with the name of the |repo| and a suffix **_VALID** is added (e.g. foobar_VALID). The operational testing is launched.
+- The |userm-uvp| implements an operational testing in |gitlabci|.
 
 - Possibly, new corrections must be implemented on the **release** branch before the deployment in production. In this case:
  
@@ -83,9 +83,9 @@ First we provide an overview of the development workflow in the nominal mode.
 
 - Once validated by the end-user, the |userm-uvp| deploys the code in the **prod** environment from the **release** branch.
 
-- The |userm-uvp| implements an operational testing in |jenkins|_. The test is named with the name of the repository (e.g. foobar). The operational testing is started.
+- The |userm-uvp| schedules a periodic operational testing in |gitlabci|.
 
-- Once the deployment is successful, the |userm-uvp| brings the content of the **release** branch into the **master** branch for archiving.
+- Once the deployment is successful, the |userm-uvp| brings the content of the **release** branch into the **main** branch for archiving.
 
 - The |userm-uvp| brings the content of the **release** branch into the **hotfix** branch.
 -  If some modifications were committed on the **release** branch, the |userm-uvp| brings the content of the **release** branch into **devel** branch such that the corrections can be integrated in the future release. Note that possible conflicts may exist on some pieces of the code. They will have to be resolved before merging thus requiring the help from the other developers involved in the modifications.

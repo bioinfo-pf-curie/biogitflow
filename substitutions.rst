@@ -10,16 +10,17 @@
      
      The fact that you are presently reading this means that you have had knowledge of the license and that you accept its terms.
 
-
 .. |step1| replace:: Step 1 - software development
+.. |step1-issue| replace:: New issue
 .. |step1-cw| replace:: Code writing
 .. |step1-ud| replace:: Deployment in the dev environment
 .. |step1-testing| replace:: Testing
 
 .. |step2| replace:: Step 2 - acceptance testing
 .. |step2-acceptance| replace:: Acceptance testing by end-users
-.. |step2-changelog| replace:: Update the CHANGELOG
-.. |step2-optesting| replace:: Implement and launch the operational testing on Jenkins
+.. |step2-changelog| replace:: Update the CHANGELOG with the new version
+.. |step2-milestone| replace:: Track the issues related to the new version in a Milestone
+.. |step2-optesting| replace:: Implement and launch the operational testing with GitLab CI/CD
 
 .. |step3| replace:: Step 3 - check the installation process and new testing
 .. |step3-tag| replace:: Add a tag with the version number
@@ -29,6 +30,7 @@
 .. |step4| replace:: Step 4 - production deployment
 .. |step4-updatelocal| replace:: Update the local repository with the version to deploy
 .. |step4-deployprod| replace:: Deployment in the prod environment
+.. |step4-newrelease| replace:: Create a new release
 
 .. |userd| replace:: developer (**D**)
 .. |userd-ud| replace:: user (**D+UD**)
@@ -38,7 +40,6 @@
 .. |repo| replace:: **remote repository**
 .. |wks| replace:: **local workspace**
 .. |soft| replace:: bioinformatics pipeline
-.. |gitlabissue| replace:: GitLab issue
 
 .. |biogitflowdocsource| replace:: source of the biogitflow documentation
 .. _biogitflowdocsource: https://github.com/bioinfo-pf-curie/biogitflow
@@ -64,14 +65,17 @@
 .. |gitprojecturl| replace:: git@gitlab.com:biogitflow/biogitflow-demo.git
 .. _gitprojecturl: git@gitlab.com:biogitflow/biogitflow-demo.git
 
-.. |gitlaburl| replace:: GitLab
-.. _gitlaburl: https://gitlab.com
-
 .. |gitlab| replace:: GitLab
 .. _gitlab: https://docs.gitlab.com/
 
-.. |jenkins| replace:: jenkins
-.. _jenkins: https://jenkins.io/ 
+.. |gitlabci| replace:: GitLab CI/CD
+
+.. |gitlabissue| replace:: GitLab issue
+
+.. |gitlabmilestone| replace:: GitLab milestone
+
+.. |gitlaburl| replace:: GitLab
+.. _gitlaburl: https://gitlab.com
 
 .. |ISTQB| replace:: International Software Testing Qualifications Board
 .. _ISTQB: https://www.istqb.org/downloads/glossary.html

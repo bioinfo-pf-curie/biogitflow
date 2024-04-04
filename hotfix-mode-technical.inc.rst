@@ -21,12 +21,18 @@ Technical procedure
 |step1|
 -------
 
+.. _step1-hotfix-technical-issue:
+
+|step1-issue|
+~~~~~~~~~~~~~
+
+- The |userd| reads the bug report or writes it in a new |gitlabissue| using the template :download:`bug_report <data/templates/issue_templates/bug_report.md>`.
+
 .. _step1-hotfix-technical-cw:
 
 |step1-cw|
 ~~~~~~~~~~
 
-- The |userd| reads the bug report or writes it in a new |gitlabissue| using the template :download:`bug_report <data/templates/issue_templates/bug_report.md>`.
 
 - The |userd| sets the |wks| on the **hotfix** branch, gets the last modifications from the |repo| and checks that the right branch is used: 
 
@@ -110,7 +116,13 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
   - or the end-users do not validate the new release. Then, the reason are tracked in the |gitlabissue| |label_validation| that has been created. We go back to :ref:`step1-hotfix-technical`. The |userd| develops the modifications requested by the end-users on a local **hotfix-id\_commit-user** branch. The process is iterated until the validation by the end-users. The same |gitlabissue| is used to track all the information during the validation process until the final validation.
 
 
-- Once validated by the end-user, the |userd|  creates a :ref:`gitlab-merge-request` from the **hotfix-id_commit-user** branch on **hotfix** branch. The merge request is assigned to a user with the **Maintainer** role.
+- Once validated by the end-user, the |userd|:
+
+  - creates a :ref:`gitlab-merge-request` from the **hotfix-id_commit-user** branch on **hotfix** branch,
+
+  - selects the **Milestone** (see :ref:`step2-hotfix-milestone`),
+
+  - assigns the **Merge request** to a user with the **Maintainer** role.
 
 - The |userm-uvp| reviews and accepts the **Merge Request**.
 
@@ -121,7 +133,11 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
 
    The CHANGELOG file provides a simple history of the different versions of the |soft|. The version numbers are listed by decreasing order.
    
-   - A version number is added in the CHANGELOG using the following naming convention: **version-x.y.z**.
+   - A version number is added in the CHANGELOG using the following naming convention: **version-x.y.z**:
+
+     - The **z** number is incremented for BUG FIXES of modifications which are not visible by the end-user
+
+     - The **x.y** numbers are incremented for major modifications considered as SIGNIFICANT USER-VISIBLE CHANGES
    
    - Comments are added in the CHANGELOG to describe the most relevant functionalities added to the new release.
 
@@ -155,6 +171,23 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
    git commit -m "[DOC] information about the version-1.2.4 after correction of the bug added in the CHANGELOG"
    git push origin hotfix
 
+.. _step2-hotfix-milestone:
+
+|step2-milestone|
+~~~~~~~~~~~~~~~~~
+
+As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new development is started. As new version encompasses several issues, it is important to track all the issues which have been considered in the new version. Therefore, the |userm-ud|:
+
+- creates a new |gitlabmilestone| with the same name as the new version number (e.g. **version-x.y.z**),
+
+- describes what is the purpose of the new |gitlabmilestone|,
+
+- adds the relevant issues in the |gitlabmilestone|.
+
+.. note::
+
+   As your developments may depend onother |gitlab| repositories you maintain, you can also create another |gitlabmilestone| in each of them and cross-referenced the milestones in the different repositories. To do so, you can just add in the field **Description** of the **Milestone** the URL of the other **Milestones**.
+
 .. _step3-hotfix-technical:
 
 |step3|
@@ -177,15 +210,14 @@ The |userm-uvp| deploys the pipeline in the **valid** environment from the **hot
 
 The |userm-uvp| tests the |soft|.
 
-Launch the operational testing in Jenkins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- The |userm-uvp| launches an analysis to generate the dataset that will be used as a reference.
+Launch the operational testing in |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- In the dedicated project in |jenkins|_ named with the suffix **_VALID**, the |userm-uvp| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.), the reference dataset will be the dataset that has been validated.
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
 
-- The |userm-uvp| launches the  operational testing.
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step3-hotfix-deployvalid` and compare the results to ensure they are identical.
 
-- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step3-hotfix-corrections`.
+- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
 
 .. _step3-hotfix-corrections:
 
@@ -286,33 +318,43 @@ The |userm-uvp| deploys the |soft| in the **prod** environment from the **hotfix
 
    |dangertag|
 
+|step4-newrelease|
+~~~~~~~~~~~~~~~~~~
 
-Launch the operational testing in Jenkins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The |userm-uvp| closes the milestone (see :ref:`step2-hotfix-milestone`) and issues related to the new version. Then, the |userm-uvp| creates a **New release** in |gitlab|:
 
-- The |userm-uvp| launches an analysis to generate the dataset that will be used as a reference.
+- Select the **Tag name** corresponding to the new release
 
-- In the dedicated project in |jenkins|_, the |userm-uvp| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.), the reference dataset will be the dataset that has been validated.
+- Fill in the **Release title** with the **version number** followed by free comments containing the keywork **hotfix**
 
-- The |userm-uvp| launches the operational testing.
+- Select the **Milestone** corresponding to the new release
 
-- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step3-hotfix-corrections`.
+.. figure:: images/hotfix-gitlab-new-release.png
 
-Bring the content of  the hotfix branch into the master branch
+Schedule the operational testing in |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
+
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step4-hotfix-deployprod` and compare the results to ensure they are identical.
+
+- The |userm-ud| connects to |gitlab| to :ref:`gitlab-ci-optest-page` if it is not yet scheduled.
+
+Bring the content of  the hotfix branch into the main branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment.
 
-- The |userm-uvp| checkouts and updates the **master** branch:
+- The |userm-uvp| checkouts and updates the **main** branch:
 
 .. code-block:: bash
 
-   git checkout master
+   git checkout main
    git status # everything must be cleaned
    git pull
    git branch -vv
 
-- The |userm-uvp| brings the content of the **hotfix** into the **master** using the option  ``--no-ff`` to avoid the fast-forward mode. This option will produce a new commit ID with a specific message to describe and track the merge:
+- The |userm-uvp| brings the content of the **hotfix** into the **main** using the option  ``--no-ff`` to avoid the fast-forward mode. This option will produce a new commit ID with a specific message to describe and track the merge:
 
 .. code-block:: bash
 
@@ -324,24 +366,24 @@ Bring the content of  the hotfix branch into the master branch
 
 ::
 
-  # On branch master
-  # Your **branch is ahead of 'origin/master' by** 113 commits.
+  # On branch main
+  # Your **branch is ahead of 'origin/main' by** 113 commits.
   # (use "git push" to publish your local commits)
   #
   # nothing to commit, working directory clean
-  *# On branch master*
+  *# On branch main*
 
 
 - The |userm-uvp| pushes the modifications on the |repo|:
 
 .. code-block:: bash
 
-   git push origin master
+   git push origin main
 
 Bring the content of the hotfix branch into the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged on the **master** branch.
+- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged on the **main** branch.
 
 - The |userm-uvp| checkouts and updates the **devel** branch:
 
@@ -383,7 +425,7 @@ Bring the content of the hotfix branch into the devel branch
 Bring the content of the hotfix branch into the release branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **master** and the **devel** branches.
+- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **main** and the **devel** branches.
 
 - The |userm-uvp| checkouts and update the **release** branch:
 
@@ -427,7 +469,7 @@ Bring the content of the hotfix branch into the release branch
 Back on the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-For security reason, the |userm-uvp| switches on the **devel** branch to avoid any risk of code modification on the **master** branch:
+For security reason, the |userm-uvp| switches on the **devel** branch to avoid any risk of code modification on the **main** branch:
 
 .. code-block:: bash
 

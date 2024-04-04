@@ -11,68 +11,21 @@
      The fact that you are presently reading this means that you have had knowledge of the license and that you accept its terms.
 
 
-
-.. |step-new-item| image:: images/jenkins_new-item.png
-.. |step-build-trigger| image:: images/jenkins_build-trigger.png
-.. |step-build-step| image:: images/jenkins_build-step.png
-.. |step-shell-cmd| image:: images/jenkins_shell-cmd.png
-.. |step-postbuild| image:: images/jenkins_postbuild.png
-.. |step-email-address| image:: images/jenkins_email_address.png
+.. |step-gitlab-ci-optest| image:: images/gitlab-ci-optest-schedule.png
 
 .. include:: substitutions.rst
 
-.. _jenkins-page:
+.. _gitlab-ci-optest-page:
 
-Configure an operational testing
-================================
+Schedule an operational testing periodically in |gitlabci|
+==========================================================
 
-This section describes how to configure an operational testing with |jenkins|.
+This section describes how to configure an operational testing with |gitlab|.
 
-.. note::
+The ``.gitlab-ci.yml`` makes it possible to run operational testing to check the reproducibility of the pipeline. To do so, it is needed to configure a *CI/CD Schedules* using the **main** branch:
 
-   Other tools can be used for this purpose such as the he `GitLab CI/CD <https://docs.gitlab.com/ce/ci/>`_.
+|step-gitlab-ci-optest|
 
-Add a new project
------------------
+It triggers a child pipeline that will also check that `optest/optest.sh` script works.
 
-- Connect on the jenkins web interface.
-
-- Create a new operational testing by clicking on the ``New Item`` button
-
-|step-new-item|
-
-
-Set the periodicity of the testing
-----------------------------------
-
-- Define the periodicity to launch the operational testing:
-
-|step-build-trigger|
-
-Write the command line to execute the testing
----------------------------------------------
-
-- Select the ``Execute Shell`` in the scrolling menu to add a build step:
-
-|step-build-step|
-
-- Add the command line, for example:
-
-::
-
-   /bioinfo/pipelines/foobar/prod/test/run-test-op.sh
-
-|step-shell-cmd|
-
-Notify the end-users if the testing fails
------------------------------------------
-
-
-- Add a post-build step such that the end-users are notified if the |soft| fails during the operational testing:
-
-|step-postbuild|
-
-- Add the emails to be notified:
-
-|step-email-address|
 

@@ -65,24 +65,24 @@ Add the templates for the issues and merge requests
     issue_templates
     merge_request_templates
 
-- Push the templates on the **master** branch on the |repo|:
+- Push the templates on the **main** branch on the |repo|:
 
 ::
 
     git add .gitlab
     git commit -m "[ADD] templates for issues and merge requests"
-    git push origin master
+    git push origin main
 
 Create the branches
 -------------------
 
-- Click in the **Repository** menu in the left panel, in order to create the **release**, **hotfix** and **devel** branches from the **master** branch
+- Click in the **Repository** menu in the left panel, in order to create the **release**, **hotfix** and **devel** branches from the **main** branch
 
    - Click on the **New branch** button:
 
    |gitlab-newbranch|
 
-   - in the form, fill **Branch name = devel** and **Create from = master**
+   - in the form, fill **Branch name = devel** and **Create from = main**
     
    |gitlab-newproject-branch-devel|
 
@@ -118,7 +118,7 @@ Set the protected branches
 .. figure:: images/gitlab_protect_branch_release.png
 
 
-- Check that **master**, **hotfix** and **release** branches are protected
+- Check that **main**, **hotfix** and **release** branches are protected
 
 .. figure:: images/gitlab_3protected_branches.png
 

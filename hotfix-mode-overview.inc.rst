@@ -75,7 +75,7 @@ First we provide an overview of the development workflow when a critical bug occ
 
 - The |userm-uvp| launches the operational testing dedicated to the  **prod** environment (e.g. foobar).
 
-- Once the deployment is successful, the |userm-uvp| merges the code from the **hotfix** branch on the **master** branch for archiving.
+- Once the deployment is successful, the |userm-uvp| merges the code from the **hotfix** branch on the **main** branch for archiving.
 
 -  The |userm-uvp| brings the content of the **hotfix** branch  into the **release**  branch such that they can be integrated in the future release.
 
