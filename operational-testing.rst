@@ -12,6 +12,7 @@
 
 
 .. |step-gitlab-ci-optest| image:: images/gitlab-ci-optest-schedule.png
+.. |step-gitlab-ci-schedule-optest| image:: images/gitlab-ci-new-schedule-optest.png
 
 .. include:: substitutions.rst
 
@@ -20,12 +21,26 @@
 Schedule an operational testing periodically in |gitlabci|
 ==========================================================
 
-This section describes how to configure an operational testing with |gitlab|.
+This section describes how to configure a periodic operational testing with |gitlabci|.
 
-The ``.gitlab-ci.yml`` makes it possible to run operational testing to check the reproducibility of the pipeline. To do so, it is needed to configure a *CI/CD Schedules* using the **main** branch:
+The ``.gitlab-ci.yml`` makes it possible to run operational testing to check the reproducibility of the pipeline. To do so, it is needed to configure a *CI/CD Schedules* using the **main** branch.
+
+From the left panel:
+
+- click on *CI/CD > Schedules*
+
+- Click on the blue button *New schedule*
+
+
+Then, fill in the form as follows:
+
+|step-gitlab-ci-schedule-optest|
+
+Finally, click on the blue button *Save pipeline schedule*
+
+The new periodic operational testing now appears in the list of the **Schedules**
 
 |step-gitlab-ci-optest|
 
-It triggers a child pipeline that will also check that `optest/optest.sh` script works.
 
 
