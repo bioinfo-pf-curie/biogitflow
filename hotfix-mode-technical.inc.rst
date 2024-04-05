@@ -186,7 +186,7 @@ As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new d
 
 .. note::
 
-   As your developments may depend onother |gitlab| repositories you maintain, you can also create another |gitlabmilestone| in each of them and cross-referenced the milestones in the different repositories. To do so, you can just add in the field **Description** of the **Milestone** the URL of the other **Milestones**.
+   As your developments may depend on other |gitlab| repositories you maintain, you can also create another |gitlabmilestone| in each of them and cross-referenced the milestones in the different repositories. To do so, you can just add in the field **Description** of the **Milestone** the URL of the other **Milestones**.
 
 .. _step3-hotfix-technical:
 

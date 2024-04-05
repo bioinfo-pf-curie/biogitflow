@@ -191,7 +191,7 @@ There is **no bijection between the branches and the deployement environments** 
 
 -  |install_validated| is the normal case when both the :ref:`step2-workflow-overview` and  the :ref:`step3-workflow-overview` are successful
 
--  |install_exceptional| is an excpetional use case
+-  |install_exceptional| is an exceptional use case
 
 Steps of the workflow and deployment environment
 ------------------------------------------------
