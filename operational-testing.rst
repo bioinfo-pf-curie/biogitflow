@@ -29,7 +29,7 @@ From the left panel:
 
 - click on *CI/CD > Schedules*
 
-- Click on the blue button *New schedule*
+- click on the blue button *New schedule*
 
 
 Then, fill in the form as follows:
