@@ -76,7 +76,7 @@ Technical procedure
 |step1-ud|
 ~~~~~~~~~~
 
-The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-id_commit-user** branch using the ad-hoc deployment scripts. **The deployment is only based on a commit ID**.
+The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-id_commit-user** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). **The deployment is only based on a commit ID**.
 
 
 .. danger::
@@ -182,7 +182,7 @@ As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new d
 
 - describes what is the purpose of the new |gitlabmilestone|,
 
-- adds the relevant issues in the |gitlabmilestone|.
+- for each issue included in the new version, set the name of the |gitlabmilestone| in the dedicated field.
 
 .. note::
 
@@ -198,7 +198,7 @@ As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new d
 |step3-deployvalid|
 ~~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the pipeline in the **valid** environment from the **hotfix** branch using the ad-hoc deployment scripts. **The deployment is only based on a commit ID**.
+The |userm-uvp| deploys the pipeline in the **valid** environment from the **hotfix** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). **The deployment is only based on a commit ID**.
 
 .. danger::
 
@@ -312,7 +312,7 @@ It is likely that the local repository is not up-to-date anymore especially if a
 |step4-deployprod|
 ~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the |soft| in the **prod** environment from the **hotfix** branch using the ad-hoc deployment scripts. **The deployement is only based on a commit ID**. The last commit ID from the **release** branch must be deployed.
+The |userm-uvp| deploys the |soft| in the **prod** environment from the **hotfix** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy).
 
 .. danger::
 

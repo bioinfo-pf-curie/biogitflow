@@ -68,7 +68,7 @@ First we provide an overview of the development workflow when a critical bug occ
 - The |userm-uvp| checks that the installation is successful, launches a set of testing, in particular the operational testing.
 
 
-- Once the validation successful, the |userm-uvp| adds a tag on **hotfix** branch with the new version number.
+- Once the validation is successful, the |userm-uvp| adds a tag on **hotfix** branch with the new version number.
 
 |step4|
 -------
