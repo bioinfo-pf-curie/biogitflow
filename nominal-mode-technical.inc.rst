@@ -285,6 +285,8 @@ Bring the content of the devel branch into the release branch
 
   - The |gitlabissue| is labeled with |label_mep|.
 
+  - The |gitlabissue| is linked to the name of the |gitlabmilestone| using the dedicated field.
+
   - The number of the |gitlabissue| opened with the label |label_validation| along with the numbers of the other Issues that describe the new features of the new release are added for tracking in this new |gitlabissue|.
 
   - The different steps of the deployment in production are recorded to track all the information about the installation along with the information about the data that have been used.

@@ -120,8 +120,6 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
 
   - creates a :ref:`gitlab-merge-request` from the **hotfix-id_commit-user** branch on **hotfix** branch,
 
-  - selects the **Milestone** (see :ref:`step2-hotfix-milestone`),
-
   - assigns the **Merge request** to a user with the **Maintainer** role.
 
 - The |userm-uvp| reviews and accepts the **Merge Request**.
@@ -182,7 +180,9 @@ As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new d
 
 - describes what is the purpose of the new |gitlabmilestone|,
 
-- for each issue included in the new version, set the name of the |gitlabmilestone| in the dedicated field.
+- for each issue included in the new version, sets the name of the |gitlabmilestone| in the dedicated field.
+
+- in the Merge request which has been created to manage the **Hotfix**, sets the name of the |gitlabmilestone| in the dedicated field.
 
 .. note::
 
@@ -255,6 +255,8 @@ In most of the cases, the deployment in the **valid** environment is very simple
 
 - The |userm-uvp| reviews and accepts the **Merge Request**.
 
+- In the Merge request, sets the name of the |gitlabmilestone| in the dedicated field.
+
 - The |userm-uvp| updates the **hotfix** branch from the |wks|:
 
 .. code-block:: bash
@@ -300,6 +302,8 @@ It is likely that the local repository is not up-to-date anymore especially if a
 - The |userm-uvp| creates an |gitlabissue| using the template :download:`deploy_in_prod_hotfix <data/templates/issue_templates/deploy_in_prod_hotfix.md>`
 
   - The |gitlabissue| is labeled with |label_mep|.
+
+  - The |gitlabissue| is linked to the  name of the |gitlabmilestone| using the dedicated field.
 
   - The |gitlabissue| number that has been used for the validation along with the |gitlabissue| number that describes the bug is added to the current |gitlabissue|.
 
