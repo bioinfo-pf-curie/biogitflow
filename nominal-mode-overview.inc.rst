@@ -49,6 +49,8 @@ First we provide an overview of the development workflow in the nominal mode.
 
 - The |userm-uvp| implements an operational testing in |gitlabci|.
 
+- The |userm-uvp| tracks the issues related to the new version in a Milestone
+
 |step3|
 -------
 

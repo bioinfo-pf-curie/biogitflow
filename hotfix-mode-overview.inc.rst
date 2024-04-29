@@ -56,6 +56,8 @@ First we provide an overview of the development workflow when a critical bug occ
 
 -  The |userm-uvp| reviews and accepts the **Merge Request**.
 
+- The |userm-uvp| tracks the issues related to the new version in a Milestone
+
 |step3|
 -------
 
