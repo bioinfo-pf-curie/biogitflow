@@ -86,3 +86,5 @@ First we provide an overview of the development workflow when a critical bug occ
 - If needed, the |userm-uvp| deploys the code from **hotfix** branch in the **dev** environment, such that at this stage of the workflow, the **same commit ID** of the |soft| is deployed  in the **dev**, **valid** and **prod** environment.
 
 - The |userm-uvp| closes the |gitlabissue| |label_validation| and the |gitlabissue| |label_mep| that were previously opened.
+
+- The |userm-uvp| creates a new Release and closes the Milestone in |gitlab|.

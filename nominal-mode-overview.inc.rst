@@ -62,7 +62,7 @@ First we provide an overview of the development workflow in the nominal mode.
 
 - The |userm-uvp| checks that the installation is successful.
 
-- The |userm-uvp| implements an operational testing in |gitlabci|.
+- The |userm-uvp| leunches the operational testing in |gitlabci|.
 
 - Possibly, new corrections must be implemented on the **release** branch before the deployment in production. In this case:
  
@@ -95,3 +95,5 @@ First we provide an overview of the development workflow in the nominal mode.
 - If needed, the |userm-uvp| deploys the code from **release** branch in the **dev** environment, such that at this stage of the workflow, the **same commit ID** of the |soft| could be deployed  in the **dev**, **valid** and **prod** environment.
 
 - The |userm-uvp| closes the |gitlabissue| |label_validation| and the |gitlabissue| |label_mep| that were previously opened.
+
+- The |userm-uvp| creates a new Release and closes the Milestone in |gitlab|.

@@ -70,7 +70,7 @@ After the final validation by the end-user, an  **operational testing** is set u
 
 .. important::
 
-   The **operational testing** is essential as it checks that the |soft| provides the expected results on a reference dataset (golden dataset) in the production environment.  This testing is performed periodically and is typically run every time that the |soft| is used in the production environment. This ensures the reproducibility of the results.
+   The **operational testing** is essential as it checks that the |soft| provides the expected results on a reference dataset (golden dataset) in the production environment.  This testing is performed periodically to ensure the reproducibility of the results.
 
 
 .. _step3-workflow-overview:

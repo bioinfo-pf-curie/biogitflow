@@ -181,3 +181,46 @@ Add members to the project
    - if needed, add additional members with their specific role
 
   .. figure:: images/gitlab_add_members.png
+
+Configure GitLab-CI
+-------------------
+
+If you use GitLab-CI to deploy the pipeline, some configuration may be required. In our infrastrcuture, we have to apply the settings described below.
+## Configuration of the gitlab-runner
+
+Disable the Shared runners
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For each pipeline GitLab repository, the sys admin has to setup a runner (which is implemented using rootless podman container). It is important to check that the **Shared runners** are disabled. In order to check the runner configuration:
+
+- go to *Settings > CI/CD*
+
+- expand the *Runners* section
+
+The configuration should look like this:
+
+  .. figure:: images/gitlab-ci-runner-config.png
+
+Increase the timeout of gitlab-ci jobs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Some job may take some time:
+
+- the job which builds the containers
+
+- the job which launches the test on the pipeline
+
+- the jobs which submit task on slurm (which may be queued for a while) 
+
+Therefore, it is important to change the timeout. In your project:
+
+- go to *Settings > CI/CD*
+
+- expand the *General pipeline* section
+
+- set *Timeout* to **1d**
+
+- *Save changes*
+
+  .. figure:: images/gitlab-ci-runner-timeout.png
+

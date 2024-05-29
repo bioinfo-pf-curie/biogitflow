@@ -281,6 +281,9 @@ Bring the content of the devel branch into the release branch
 
    git push origin release
 
+Create an issue to track the production deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 - The |userm-uvp| creates a |gitlabissue| using the template :download:`deploy_in_prod <data/templates/issue_templates/deploy_in_prod.md>`:
 
   - The |gitlabissue| is labeled with |label_mep|.
@@ -306,6 +309,15 @@ The |userm-uvp| deploys the pipeline in the **valid** environment from the **rel
 
 At this stage, the current version under development, is deployed in ``/bioinfo/pipelines/foobar/valid`` and the file ``/bioinfo/pipelines/foobar/valid/version`` contains the commit ID that has been deployed.
 
+Launch the operational testing using |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
+
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step3-nominal-deployvalid` and compare the results to ensure they are identical.
+
+- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
+
 .. _step3-nominal-testvalid:
 
 |step3-testvalid|
@@ -313,14 +325,6 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
 
 The |userm-uvp| tests the |soft|.
 
-Implement and launch the operational testing using |gitlabci|
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
-
-- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step3-nominal-deployvalid` and compare the results to ensure they are identical.
-
-- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
 
 .. _step3-nominal-corrections:
 
@@ -422,8 +426,7 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
 |step4-newrelease|
 ~~~~~~~~~~~~~~~~~~
 
-
-The |userm-uvp| closes the milestone (see :ref:`step2-milestone`) and issues related to the new version. Then, the |userm-uvp| creates a **New release** in |gitlab|:
+The |userm-uvp| creates a **New release** in |gitlab|:
 
 - Select the **Tag name** corresponding to the new release
 
@@ -563,7 +566,11 @@ Bring the content of the release branch into the devel branch
 
    git push origin devel
 
-- The |userm-uvp| closes the |gitlabissue| |label_validation| and the |gitlabissue| |label_mep| that have been opened.
+- The |userm-uvp| closes:
+
+  - all the GitLab issues which have been opened including the |label_validation|, the |label_mep|, and all issues related to the new version
+ 
+  - the milestone (see :ref:`step2-milestone`)
 
 Back on the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~

@@ -76,7 +76,7 @@ Technical procedure
 |step1-ud|
 ~~~~~~~~~~
 
-The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-id_commit-user** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). **The deployment is only based on a commit ID**.
+The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-id_commit-user** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy).
 
 
 .. danger::
@@ -193,22 +193,31 @@ As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new d
 |step3|
 -------
 
+Create an issue to track the production deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-uvp| creates an |gitlabissue| using the template :download:`deploy_in_prod_hotfix <data/templates/issue_templates/deploy_in_prod_hotfix.md>`
+
+  - The |gitlabissue| is labeled with |label_mep|.
+
+  - The |gitlabissue| is linked to the  name of the |gitlabmilestone| using the dedicated field.
+
+  - The |gitlabissue| number that has been used for the validation along with the |gitlabissue| number that describes the bug is added to the current |gitlabissue|.
+
+  - The |userm-uvp| tracks all the steps that are performed for the deployment in the production environment (including link or name of datasets that are used).
+
+  - The |userm-uvp| fills the |gitlabissue| at each step.
+
 .. _step3-hotfix-deployvalid:
 
 |step3-deployvalid|
 ~~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the pipeline in the **valid** environment from the **hotfix** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). **The deployment is only based on a commit ID**.
+The |userm-uvp| deploys the pipeline in the **valid** environment from the **hotfix** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy).
 
 .. danger::
 
    |dangertag|
-
-
-|step3-testvalid|
-~~~~~~~~~~~~~~~~~
-
-The |userm-uvp| tests the |soft|.
 
 Launch the operational testing in |gitlabci|
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -218,6 +227,11 @@ Launch the operational testing in |gitlabci|
 - In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step3-hotfix-deployvalid` and compare the results to ensure they are identical.
 
 - If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
+
+|step3-testvalid|
+~~~~~~~~~~~~~~~~~
+
+The |userm-uvp| tests the |soft|.
 
 .. _step3-hotfix-corrections:
 
@@ -299,17 +313,6 @@ It is likely that the local repository is not up-to-date anymore especially if a
    git pull
    git branch -vv
 
-- The |userm-uvp| creates an |gitlabissue| using the template :download:`deploy_in_prod_hotfix <data/templates/issue_templates/deploy_in_prod_hotfix.md>`
-
-  - The |gitlabissue| is labeled with |label_mep|.
-
-  - The |gitlabissue| is linked to the  name of the |gitlabmilestone| using the dedicated field.
-
-  - The |gitlabissue| number that has been used for the validation along with the |gitlabissue| number that describes the bug is added to the current |gitlabissue|.
-
-  - The |userm-uvp| tracks all the steps that are performed for the deployment in the production environment (including link or name of datasets that are used).
-
-  - The |userm-uvp| fills the |gitlabissue| at each step.
 
 .. _step4-hotfix-deployprod:
 
@@ -362,7 +365,7 @@ Bring the content of  the hotfix branch into the main branch
 
 .. code-block:: bash
 
-   git merge --no-ff hotfix`` # can be a bit verbose
+   git merge --no-ff hotfix # can be a bit verbose
    git status # must be cleaned
    git branch -vv
 
@@ -383,48 +386,6 @@ Bring the content of  the hotfix branch into the main branch
 .. code-block:: bash
 
    git push origin main
-
-Bring the content of the hotfix branch into the devel branch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged on the **main** branch.
-
-- The |userm-uvp| checkouts and updates the **devel** branch:
-
-.. code-block:: bash
-
-   git checkout devel
-   git status # must be cleaned otherwise, commit or stash your modifications
-   git pull
-   git branch -vv
-
-- The |userm-uvp| brings the content of the **hotfix** branch into the **devel** branch:
-
-.. code-block:: bash
-
-   git merge --no-ff hotfix # may be a bit verbose
-   git status # may say something
-   git branch -vv
-
-- If the **devel** branch has been modified in the meantime, git will try to merge the modifications from the **hotfix** branch.
-
-- If some files cannot be merged automatically, they will appear to have **conflicts** in the output of the ``git status``:
-
-::
-
-  # On branch devel
-  # You have unmerged paths.
-  # (fix conflicts and run "git commit")...
-  # (use "git add ..." to mark resolution)
-  # both modified:build.xml
-
-- The conflicts have to be resolved manually. In that case, ask the help from the other developers.
-
-- The files with resolved conflicts must be added to the staging area, committed, and the merge must be sent on the |repo|:
-
-.. code-block:: bash
-
-   git push origin devel
 
 Bring the content of the hotfix branch into the release branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -468,7 +429,54 @@ Bring the content of the hotfix branch into the release branch
 
    git push origin release
 
-- The |userm-uvp| closes the |gitlabissue| |label_validation| and |gitlabissue| |label_mep| that have been opened.
+- The |userm-uvp| closes:
+
+  - all the GitLab issues which have been opened including the |label_validation|, the |label_mep|, and all issues related to the new version
+ 
+  - the milestone (see :ref:`step2-hotfix-milestone`).
+
+Bring the content of the hotfix branch into the devel branch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged on the **main** branch.
+
+- The |userm-uvp| checkouts and updates the **devel** branch:
+
+.. code-block:: bash
+
+   git checkout devel
+   git status # must be cleaned otherwise, commit or stash your modifications
+   git pull
+   git branch -vv
+
+- The |userm-uvp| brings the content of the **hotfix** branch into the **devel** branch:
+
+.. code-block:: bash
+
+   git merge --no-ff hotfix # may be a bit verbose
+   git status # may say something
+   git branch -vv
+
+- If the **devel** branch has been modified in the meantime, git will try to merge the modifications from the **hotfix** branch.
+
+- If some files cannot be merged automatically, they will appear to have **conflicts** in the output of the ``git status``:
+
+::
+
+  # On branch devel
+  # You have unmerged paths.
+  # (fix conflicts and run "git commit")...
+  # (use "git add ..." to mark resolution)
+  # both modified:build.xml
+
+- The conflicts have to be resolved manually. In that case, ask the help from the other developers.
+
+- The files with resolved conflicts must be added to the staging area, committed, and the merge must be sent on the |repo|:
+
+.. code-block:: bash
+
+   git push origin devel
+
 
 Back on the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~
