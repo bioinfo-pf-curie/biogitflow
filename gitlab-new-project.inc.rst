@@ -185,8 +185,7 @@ Add members to the project
 Configure GitLab-CI
 -------------------
 
-If you use GitLab-CI to deploy the pipeline, some configuration may be required. In our infrastrcuture, we have to apply the settings described below.
-## Configuration of the gitlab-runner
+If you use GitLab-CI to deploy the pipeline, some configuration may be required. In our infrastructure, we have to apply the settings described below.
 
 Disable the Shared runners
 ~~~~~~~~~~~~~~~~~~~~~~~~~~

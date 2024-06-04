@@ -62,7 +62,7 @@ First we provide an overview of the development workflow in the nominal mode.
 
 - The |userm-uvp| checks that the installation is successful.
 
-- The |userm-uvp| leunches the operational testing in |gitlabci|.
+- The |userm-uvp| launches the operational testing in |gitlabci|.
 
 - Possibly, new corrections must be implemented on the **release** branch before the deployment in production. In this case:
  
