@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -56,6 +56,8 @@ First we provide an overview of the development workflow when a critical bug occ
 
 -  The |userm-uvp| reviews and accepts the **Merge Request**.
 
+- The |userm-uvp| tracks the issues related to the new version in a Milestone
+
 |step3|
 -------
 
@@ -66,7 +68,7 @@ First we provide an overview of the development workflow when a critical bug occ
 - The |userm-uvp| checks that the installation is successful, launches a set of testing, in particular the operational testing.
 
 
-- Once the validation successful, the |userm-uvp| adds a tag on **hotfix** branch with the new version number.
+- Once the validation is successful, the |userm-uvp| adds a tag on **hotfix** branch with the new version number.
 
 |step4|
 -------
@@ -75,7 +77,7 @@ First we provide an overview of the development workflow when a critical bug occ
 
 - The |userm-uvp| launches the operational testing dedicated to the  **prod** environment (e.g. foobar).
 
-- Once the deployment is successful, the |userm-uvp| merges the code from the **hotfix** branch on the **master** branch for archiving.
+- Once the deployment is successful, the |userm-uvp| merges the code from the **hotfix** branch on the **main** branch for archiving.
 
 -  The |userm-uvp| brings the content of the **hotfix** branch  into the **release**  branch such that they can be integrated in the future release.
 
@@ -84,3 +86,5 @@ First we provide an overview of the development workflow when a critical bug occ
 - If needed, the |userm-uvp| deploys the code from **hotfix** branch in the **dev** environment, such that at this stage of the workflow, the **same commit ID** of the |soft| is deployed  in the **dev**, **valid** and **prod** environment.
 
 - The |userm-uvp| closes the |gitlabissue| |label_validation| and the |gitlabissue| |label_mep| that were previously opened.
+
+- The |userm-uvp| creates a new Release and closes the Milestone in |gitlab|.

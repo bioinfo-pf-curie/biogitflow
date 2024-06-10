@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -65,24 +65,24 @@ Add the templates for the issues and merge requests
     issue_templates
     merge_request_templates
 
-- Push the templates on the **master** branch on the |repo|:
+- Push the templates on the **main** branch on the |repo|:
 
 ::
 
     git add .gitlab
     git commit -m "[ADD] templates for issues and merge requests"
-    git push origin master
+    git push origin main
 
 Create the branches
 -------------------
 
-- Click in the **Repository** menu in the left panel, in order to create the **release**, **hotfix** and **devel** branches from the **master** branch
+- Click in the **Repository** menu in the left panel, in order to create the **release**, **hotfix** and **devel** branches from the **main** branch
 
    - Click on the **New branch** button:
 
    |gitlab-newbranch|
 
-   - in the form, fill **Branch name = devel** and **Create from = master**
+   - in the form, fill **Branch name = devel** and **Create from = main**
     
    |gitlab-newproject-branch-devel|
 
@@ -118,7 +118,7 @@ Set the protected branches
 .. figure:: images/gitlab_protect_branch_release.png
 
 
-- Check that **master**, **hotfix** and **release** branches are protected
+- Check that **main**, **hotfix** and **release** branches are protected
 
 .. figure:: images/gitlab_3protected_branches.png
 
@@ -181,3 +181,45 @@ Add members to the project
    - if needed, add additional members with their specific role
 
   .. figure:: images/gitlab_add_members.png
+
+Configure GitLab-CI
+-------------------
+
+If you use GitLab-CI to deploy the pipeline, some configuration may be required. In our infrastructure, we have to apply the settings described below.
+
+Disable the Shared runners
+~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+For each pipeline GitLab repository, the sys admin has to setup a runner (which is implemented using rootless podman container). It is important to check that the **Shared runners** are disabled. In order to check the runner configuration:
+
+- go to *Settings > CI/CD*
+
+- expand the *Runners* section
+
+The configuration should look like this:
+
+  .. figure:: images/gitlab-ci-runner-config.png
+
+Increase the timeout of gitlab-ci jobs
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+Some job may take some time:
+
+- the job which builds the containers
+
+- the job which launches the test on the pipeline
+
+- the jobs which submit task on slurm (which may be queued for a while) 
+
+Therefore, it is important to change the timeout. In your project:
+
+- go to *Settings > CI/CD*
+
+- expand the *General pipeline* section
+
+- set *Timeout* to **1d**
+
+- *Save changes*
+
+  .. figure:: images/gitlab-ci-runner-timeout.png
+

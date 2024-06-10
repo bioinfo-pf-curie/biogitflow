@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -121,7 +121,7 @@ Create tags
 
 -  add a tag on the last commit (``HEAD``) in the |wks|:
 
-   ``git tag version-1.0.0 -m "[TAG] version-1.0.0``
+   ``git tag version-1.0.0 -m "[TAG] version-1.0.0"``
 
 -  list the information about a tag:
 
@@ -141,7 +141,7 @@ Create tags
 
 -  add a tag on a previous commit:
 
-   ``git tag version-1.0.0 -m "[TAG] version-1.0.0" hash_du_commit``
+   ``git tag version-1.0.0 -m "[TAG] version-1.0.0" hash_du_commit"``
 
 Configuration
 -------------
@@ -191,15 +191,15 @@ Useful commands
 
    ``git remote add origin <url>``
 
-   ``git push -u origin master``
+   ``git push -u origin main``
 
 -  Information about the files in the |wks|:
 
    ``git status``
 
--  Difference between the |wks| and the master branch of the remote repository:
+-  Difference between the |wks| and the main branch of the remote repository:
 
-   ``git diff origin/master``
+   ``git diff origin/main``
 
 -  Difference between two commits for a file on the same branch:
 
@@ -221,9 +221,9 @@ Useful commands
 
    ``git branch -d mybranch``
 
--  Create a local branch named **foo** from the master branch of the remote repository:
+-  Create a local branch named **foo** from the main branch of the remote repository:
 
-   ``git checkout -b foo origin/master``
+   ``git checkout -b foo origin/main``
 
 -  Create a local branch named **bar** that is not supposed to be pushed into the remote repository from the current branch:
 

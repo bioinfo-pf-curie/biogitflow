@@ -1,3 +1,9 @@
+version-2.0.0
+2024-04-04
+    Use milestone to track issues related to a new version
+    Create Release
+    Use GitLab CI/CD for operational testing
+
 version-1.1.1
 2021-03-31
     Update the article reference (Issue #3)

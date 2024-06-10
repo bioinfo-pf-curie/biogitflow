@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -136,7 +136,7 @@ In this exercise, the person has the (M+UVP) :ref:`devel-workflow-overview-roles
 
 * perform the required validation
 
-* bring the code from the release branch to the master, hotfix and devel branches
+* bring the code from the release branch to the main, hotfix and devel branches
 
 
 Ex4: |step3| and |step4| with the hotfix procedure

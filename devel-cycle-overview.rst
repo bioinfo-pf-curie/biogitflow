@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -66,11 +66,11 @@ Different representative use cases must be evaluated on real datasets. For a |so
 
 If the end-user does not validate the developments, the :ref:`step1-workflow-overview` starts again.
 
-After the final validation by the end-user, an  **operational testing** is set up using the tool |jenkins|_.
+After the final validation by the end-user, an  **operational testing** is set up in |gitlabci|.
 
 .. important::
 
-   The **operational testing** is essential as it checks that the |soft| provides the expected results on a reference dataset (golden dataset) in the production environment.  This testing is performed periodically and is typically run every time that the |soft| is used in the production environment. This ensures the reproducibility of the results.
+   The **operational testing** is essential as it checks that the |soft| provides the expected results on a reference dataset (golden dataset) in the production environment.  This testing is performed periodically to ensure the reproducibility of the results.
 
 
 .. _step3-workflow-overview:
@@ -139,10 +139,10 @@ The management of the different |soft| versions is based on different |git|_ **b
 
 - **hotfix**: this branch is a mirror of the **release** branch and is used to patch the code that is in production. If a critical bug occurs in production, this branch is used to fix the issue.
 
-- **master**: this branch is not used for development, it is only used to archive the code from the **release** and **hotfix** branches.
+- **main**: this branch is not used for development, it is only used to archive the code from the **release** and **hotfix** branches.
       
 
-Among these four branches, the **release**, **master** and **hotfix** are protected branches. This means that only the developer with the **Maintainer** role in the |gitlaburl|_ repository can push code on the remote repository. Other developers have to :ref:`gitlab-merge-request` to submit their modifications to the **Maintainer**.
+Among these four branches, the **release**, **main** and **hotfix** are protected branches. This means that only the developer with the **Maintainer** role in the |gitlaburl|_ repository can push code on the remote repository. Other developers have to :ref:`gitlab-merge-request` to submit their modifications to the **Maintainer**.
 
 The developer will have to create local branches in the |wks| used for development whenever a new feature is implemented, a hotfix is resolved or problem occurred during the :ref:`step3-workflow-overview`. Therefore, the |wks| will contain:
 
@@ -170,17 +170,17 @@ There is **no bijection between the branches and the deployement environments** 
 
 
 
-+-------------------+------------------------------+------------------------------+------------------------+
-|                   | env:dev                      | env:valid                    | env:prod               |
-+===================+==============================+==============================+========================+
-| branche:devel     | |install_normal|             | |install_prohibited|         | |install_prohibited|   |
-+-------------------+------------------------------+------------------------------+------------------------+
-| branche:release   | |install_possible|           | |install_normal|             | |install_validated|    |
-+-------------------+------------------------------+------------------------------+------------------------+
-| branche:hotfix    | |install_possible|           | |install_normal|             | |install_validated|    |
-+-------------------+------------------------------+------------------------------+------------------------+
-| branche:master    | |install_exceptional|        | |install_exceptional|        | |install_exceptional|  |
-+-------------------+------------------------------+------------------------------+------------------------+
++----------------+------------------------+------------------------+------------------------+
+|                | env:dev                | env:valid              | env:prod               |
++================+========================+========================+========================+
+| branch:devel   | |install_normal|       | |install_prohibited|   | |install_prohibited|   |
++----------------+------------------------+------------------------+------------------------+
+| branch:release | |install_possible|     | |install_normal|       | |install_validated|    |
++----------------+------------------------+------------------------+------------------------+
+| branch:hotfix  | |install_possible|     | |install_normal|       | |install_validated|    |
++----------------+------------------------+------------------------+------------------------+
+| branch:main    | |install_exceptional|  | |install_exceptional|  | |install_exceptional|  |
++----------------+------------------------+------------------------+------------------------+
 
 
 -  |install_normal| is the normal case
@@ -191,7 +191,7 @@ There is **no bijection between the branches and the deployement environments** 
 
 -  |install_validated| is the normal case when both the :ref:`step2-workflow-overview` and  the :ref:`step3-workflow-overview` are successful
 
--  |install_exceptional| is an excpetional use case
+-  |install_exceptional| is an exceptional use case
 
 Steps of the workflow and deployment environment
 ------------------------------------------------

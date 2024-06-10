@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -21,12 +21,17 @@ Technical procedure
 |step1|
 -------
 
+.. _step1-nominal-technical-issue:
+
+|step1-issue|
+~~~~~~~~~~~~~
+
+- The |userd| reads the specifications of the new feature to be implemented in the |gitlabissue| or writes them in a new |gitlabissue| using the template :download:`new_feature <data/templates/issue_templates/new_feature.md>`.
+
 .. _step1-nominal-technical-cw:
 
 |step1-cw|
 ~~~~~~~~~~
-
-- The |userd| reads the specifications of the new feature to be implemented in the |gitlabissue| or writes them in a new |gitlabissue| using the template :download:`new_feature <data/templates/issue_templates/new_feature.md>`.
 
 - The |userd| clones the |repo|:
 
@@ -128,10 +133,13 @@ Technical procedure
 
    git branch -d feature
 
+
+.. _step1-nominal-deploydev:
+
 |step1-ud|
 ~~~~~~~~~~
 
-The |userd-ud| deploys the |soft| in the **dev** environment from the **devel** branch using the ad-hoc deployment scripts. **The deployement is only based on a commit ID**.
+The |userd-ud| deploys the |soft| in the **dev** environment from the **devel** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). 
 
 .. danger::
 
@@ -175,13 +183,13 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
 |step2-optesting|
 ~~~~~~~~~~~~~~~~~
 
-- The |userm-ud| modifies (if needed) the script to launch the operational testing (e.g. ``test/run-test.sh``).
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
 
-- If no operational testing exists, the |userm-ud| creates a new project in |jenkins|_ with the name of the repository and a suffix **_DEV** (e.g. foobar_DEV).
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step1-nominal-deploydev` and compare the results to ensure they are identical.
 
-- The |userm-ud| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.).
+- The |userm-ud| modifies (if needed) the script to compare the results (e.g. ``optest/optest.sh``).
 
-- The |userm-ud| launches the operational testing.
+- The |userm-ud| modifies (if needed) the test dataset used to launch the pipeline
 
 - If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
 
@@ -192,7 +200,11 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
 
    The CHANGELOG file provides a simple history of the different versions of the |soft|. The version numbers are listed by decreasing order.
    
-   - A version number is added in the CHANGELOG using the following naming convention: **version-x.y.z**.
+   - A version number is added in the CHANGELOG using the following naming convention: **version-x.y.z**:
+
+     - The **z** number is incremented for BUG FIXES of modifications which are not visible by the end-user
+
+     - The **x.y** numbers are incremented for major modifications considered as SIGNIFICANT USER-VISIBLE CHANGES
    
    - Comments are added in the CHANGELOG to describe the most relevant functionalities added to the new release.
 
@@ -223,6 +235,23 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
    git commit -m "[DOC] information about the version-1.2.3 added in the CHANGELOG"
    git push origin devel
 
+.. _step2-milestone:
+
+|step2-milestone|
+~~~~~~~~~~~~~~~~~
+
+As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new development is started. As new version encompasses several issues, it is important to track all the issues which have been considered in the new version. Therefore, the |userm-ud|:
+
+- creates a new |gitlabmilestone| with the same name as the new version number (e.g. **version-x.y.z**),
+
+- describes what is the purpose of the new |gitlabmilestone|,
+
+- for each issue included in the new version, set the name of the |gitlabmilestone| in the dedicated field.
+
+.. note::
+
+   As your developments may depend on other |gitlab| repositories you maintain, you can also create another |gitlabmilestone| in each of them and cross-referenced the milestones in the different repositories. To do so, you can just add in the field **Description** of the **Milestone** the URL of the other **Milestones**.
+
 .. _step3-nominal-technical:
 
 |step3|
@@ -252,9 +281,14 @@ Bring the content of the devel branch into the release branch
 
    git push origin release
 
+Create an issue to track the production deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 - The |userm-uvp| creates a |gitlabissue| using the template :download:`deploy_in_prod <data/templates/issue_templates/deploy_in_prod.md>`:
 
   - The |gitlabissue| is labeled with |label_mep|.
+
+  - The |gitlabissue| is linked to the name of the |gitlabmilestone| using the dedicated field.
 
   - The number of the |gitlabissue| opened with the label |label_validation| along with the numbers of the other Issues that describe the new features of the new release are added for tracking in this new |gitlabissue|.
 
@@ -267,13 +301,22 @@ Bring the content of the devel branch into the release branch
 |step3-deployvalid|
 ~~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the pipeline in the **valid** environment from the **release** branch using the ad-hoc deployment scripts. **The deployement is only based on a commit ID**.
+The |userm-uvp| deploys the pipeline in the **valid** environment from the **release** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). 
 
 .. danger::
 
    |dangertag|
 
 At this stage, the current version under development, is deployed in ``/bioinfo/pipelines/foobar/valid`` and the file ``/bioinfo/pipelines/foobar/valid/version`` contains the commit ID that has been deployed.
+
+Launch the operational testing using |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
+
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step3-nominal-deployvalid` and compare the results to ensure they are identical.
+
+- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
 
 .. _step3-nominal-testvalid:
 
@@ -282,18 +325,6 @@ At this stage, the current version under development, is deployed in ``/bioinfo/
 
 The |userm-uvp| tests the |soft|.
 
-Implement and launch the operational testing in Jenkins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- The |userm-uvp| modifies (if needed) the script to launch the operational testing (e.g. ``test/run-test.sh``).
-
-- If no operational testing exists, the |userm-uvp| creates a new project in |jenkins|_ with the name of the repository and a suffix **_VALID** (e.g. foobar_VALID). 
-
-- The |userm-uvp| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.).
-
-- The |userm-uvp| launches the operational testing.
-
-- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step3-nominal-corrections`.
 
 .. _step3-nominal-corrections:
 
@@ -327,7 +358,13 @@ In most of the cases, the deployment in the **valid** environment is very simple
 
 - The |userd| deploys the code from the **release-id\_version-user** branch either in a personal environment for testing or in the **dev** environment to perform unit, integration, system and regression testing.
 
-- Once the code validated, the |userd| creates a :ref:`gitlab-merge-request` from the **release-id\_version-user** branch on the **release** branch using the template :download:`merge_request_template.md <data/templates/merge_request_templates/merge_request_template.md>`. The **Merge request** is assigned to a user with the **Maintainer** role.
+- Once the code validated, the |userd|:
+
+  - creates a :ref:`gitlab-merge-request` from the **release-id\_version-user** branch on the **release** branch using the template :download:`merge_request_template.md <data/templates/merge_request_templates/merge_request_template.md>`,
+
+  - selects the **Milestone** (see :ref:`step2-milestone`),
+
+  - assigns the **Merge request** to a user with the **Maintainer** role.
 
 - The |userm-uvp| reviews and accepts the **Merge Request**.
 
@@ -378,7 +415,7 @@ It is likely that the local repository is not up-to-date anymore especially if a
 |step4-deployprod|
 ~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the |soft| in the **prod** environment from the **release** branch using the ad-hoc deployment scripts. **The deployment is only based on a commit ID**. The last commit ID from the **release** branch must be deployed.
+The |userm-uvp| deploys the |soft| in the **prod** environment from the **release** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy). **The deployment is only based on a commit ID**. The last commit ID from the **release** branch must be deployed.
 
 .. danger::
 
@@ -386,34 +423,43 @@ The |userm-uvp| deploys the |soft| in the **prod** environment from the **releas
 
 At this stage, the current version under development, is deployed in ``/bioinfo/pipelines/foobar/prod`` and the file ``/bioinfo/pipelines/foobar/prod/version`` contains the commit ID that has been deployed.
 
-Implement and launch the operational testing in Jenkins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+|step4-newrelease|
+~~~~~~~~~~~~~~~~~~
 
-- The |userm-uvp| modifies (if needed) the script to launch the operational testing (e.g. ``test/run-test.sh``).
+The |userm-uvp| creates a **New release** in |gitlab|:
 
-- If no operational testing exists, the |userm-uvp| creates a new project in |jenkins|_ with the name of the repository (e.g. foobar).
+- Select the **Tag name** corresponding to the new release
 
-- The |userm-uvp| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.).
+- Fill in the **Release title** with the **version number** followed by free comments
 
-- The |userm-uvp| launches the operational testing.
+- Select the **Milestone** corresponding to the new release
 
-- If the operational testing fails (the |soft| does not work or is not reproducible), restore the previous release and go back to the :ref:`step3-nominal-corrections`.
+.. figure:: images/nominal-gitlab-new-release.png
 
-Bring the content of the release branch into the master branch
+Schedule an operational testing in |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
+
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step4-nominal-deployprod` and compare the results to ensure they are identical.
+
+- The |userm-ud| connects to |gitlab| to :ref:`gitlab-ci-optest-page` if it is not yet scheduled.
+
+Bring the content of the release branch into the main branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - At this stage, there is a stable code on the **release** branch that has been tested, validated and successfully installed in the **prod** environment.
 
-- The |userm-uvp| checkouts and updates the **master** branch:
+- The |userm-uvp| checkouts and updates the **main** branch:
 
 .. code-block:: bash
 
-   git checkout master
+   git checkout main
    git status # everything must be cleaned
    git pull
    git branch -vv
 
-- The |userm-uvp| brings the content of the **release** branch into the **master** branch using the option  ``--no-ff`` to avoid the fast-forward mode. This option will produce a new commit ID with a specific message to describe and track the merge:
+- The |userm-uvp| brings the content of the **release** branch into the **main** branch using the option  ``--no-ff`` to avoid the fast-forward mode. This option will produce a new commit ID with a specific message to describe and track the merge:
 
 .. code-block:: bash
 
@@ -425,8 +471,8 @@ Bring the content of the release branch into the master branch
 
 ::
 
-  # On branch master
-  # Your **branch is ahead of 'origin/master' by** 113 commits.
+  # On branch main
+  # Your **branch is ahead of 'origin/main' by** 113 commits.
   # (use "git push" to publish your local commits)
   #
   # nothing to commit, working directory clean
@@ -435,12 +481,12 @@ Bring the content of the release branch into the master branch
 
 .. code-block:: bash
 
-   git push origin master
+   git push origin main
 
 Bring the content of the release branch into the hotfix branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- At this stage, there is a stable code on the **release** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **master** branch.
+- At this stage, there is a stable code on the **release** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **main** branch.
 
 
 - The |userm-uvp| checkouts and updates the **hotfix** branch:
@@ -464,8 +510,8 @@ Bring the content of the release branch into the hotfix branch
 
 ::
 
-  # On branch master
-  # Your **branch is ahead of 'origin/master' by** 113 commits.
+  # On branch main
+  # Your **branch is ahead of 'origin/main' by** 113 commits.
   # (use "git push" to publish your local commits)
   #
   # nothing to commit, working directory clean
@@ -480,7 +526,7 @@ Bring the content of the release branch into the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 
-- At this stage, there is a stable code on the **release** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **master** and the **hotfix** branches.
+- At this stage, there is a stable code on the **release** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **main** and the **hotfix** branches.
 - This step is necessary if some commits have been done on the **release** branch (this occurs only if there was a :ref:`step3-nominal-corrections`).
 
 - The |userm-uvp| checkouts and updates the **devel** branch:
@@ -520,12 +566,16 @@ Bring the content of the release branch into the devel branch
 
    git push origin devel
 
-- The |userm-uvp| closes the |gitlabissue| |label_validation| and the |gitlabissue| |label_mep| that have been opened.
+- The |userm-uvp| closes:
+
+  - all the GitLab issues which have been opened including the |label_validation|, the |label_mep|, and all issues related to the new version
+ 
+  - the milestone (see :ref:`step2-milestone`)
 
 Back on the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-For security reason, the |userm-uvp| switches on the **devel** branch to avoid any risk of code modification on the **master** branch:
+For security reason, the |userm-uvp| switches on the **devel** branch to avoid any risk of code modification on the **main** branch:
 
 .. code-block:: bash
 

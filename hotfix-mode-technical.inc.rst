@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -21,12 +21,18 @@ Technical procedure
 |step1|
 -------
 
+.. _step1-hotfix-technical-issue:
+
+|step1-issue|
+~~~~~~~~~~~~~
+
+- The |userd| reads the bug report or writes it in a new |gitlabissue| using the template :download:`bug_report <data/templates/issue_templates/bug_report.md>`.
+
 .. _step1-hotfix-technical-cw:
 
 |step1-cw|
 ~~~~~~~~~~
 
-- The |userd| reads the bug report or writes it in a new |gitlabissue| using the template :download:`bug_report <data/templates/issue_templates/bug_report.md>`.
 
 - The |userd| sets the |wks| on the **hotfix** branch, gets the last modifications from the |repo| and checks that the right branch is used: 
 
@@ -70,7 +76,7 @@ Technical procedure
 |step1-ud|
 ~~~~~~~~~~
 
-The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-id_commit-user** branch using the ad-hoc deployment scripts. **The deployment is only based on a commit ID**.
+The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-id_commit-user** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy).
 
 
 .. danger::
@@ -110,7 +116,11 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
   - or the end-users do not validate the new release. Then, the reason are tracked in the |gitlabissue| |label_validation| that has been created. We go back to :ref:`step1-hotfix-technical`. The |userd| develops the modifications requested by the end-users on a local **hotfix-id\_commit-user** branch. The process is iterated until the validation by the end-users. The same |gitlabissue| is used to track all the information during the validation process until the final validation.
 
 
-- Once validated by the end-user, the |userd|  creates a :ref:`gitlab-merge-request` from the **hotfix-id_commit-user** branch on **hotfix** branch. The merge request is assigned to a user with the **Maintainer** role.
+- Once validated by the end-user, the |userd|:
+
+  - creates a :ref:`gitlab-merge-request` from the **hotfix-id_commit-user** branch on **hotfix** branch,
+
+  - assigns the **Merge request** to a user with the **Maintainer** role.
 
 - The |userm-uvp| reviews and accepts the **Merge Request**.
 
@@ -121,7 +131,11 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
 
    The CHANGELOG file provides a simple history of the different versions of the |soft|. The version numbers are listed by decreasing order.
    
-   - A version number is added in the CHANGELOG using the following naming convention: **version-x.y.z**.
+   - A version number is added in the CHANGELOG using the following naming convention: **version-x.y.z**:
+
+     - The **z** number is incremented for BUG FIXES of modifications which are not visible by the end-user
+
+     - The **x.y** numbers are incremented for major modifications considered as SIGNIFICANT USER-VISIBLE CHANGES
    
    - Comments are added in the CHANGELOG to describe the most relevant functionalities added to the new release.
 
@@ -155,37 +169,69 @@ The |userd-ud| deploys the |soft| in the **dev** environment from the **hotfix-i
    git commit -m "[DOC] information about the version-1.2.4 after correction of the bug added in the CHANGELOG"
    git push origin hotfix
 
+.. _step2-hotfix-milestone:
+
+|step2-milestone|
+~~~~~~~~~~~~~~~~~
+
+As mentioned, a :ref:`step1-nominal-technical-issue` is created whenever a new development is started. As new version encompasses several issues, it is important to track all the issues which have been considered in the new version. Therefore, the |userm-ud|:
+
+- creates a new |gitlabmilestone| with the same name as the new version number (e.g. **version-x.y.z**),
+
+- describes what is the purpose of the new |gitlabmilestone|,
+
+- for each issue included in the new version, sets the name of the |gitlabmilestone| in the dedicated field.
+
+- in the Merge request which has been created to manage the **Hotfix**, sets the name of the |gitlabmilestone| in the dedicated field.
+
+.. note::
+
+   As your developments may depend on other |gitlab| repositories you maintain, you can also create another |gitlabmilestone| in each of them and cross-referenced the milestones in the different repositories. To do so, you can just add in the field **Description** of the **Milestone** the URL of the other **Milestones**.
+
 .. _step3-hotfix-technical:
 
 |step3|
 -------
+
+Create an issue to track the production deployment
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-uvp| creates an |gitlabissue| using the template :download:`deploy_in_prod_hotfix <data/templates/issue_templates/deploy_in_prod_hotfix.md>`
+
+  - The |gitlabissue| is labeled with |label_mep|.
+
+  - The |gitlabissue| is linked to the  name of the |gitlabmilestone| using the dedicated field.
+
+  - The |gitlabissue| number that has been used for the validation along with the |gitlabissue| number that describes the bug is added to the current |gitlabissue|.
+
+  - The |userm-uvp| tracks all the steps that are performed for the deployment in the production environment (including link or name of datasets that are used).
+
+  - The |userm-uvp| fills the |gitlabissue| at each step.
 
 .. _step3-hotfix-deployvalid:
 
 |step3-deployvalid|
 ~~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the pipeline in the **valid** environment from the **hotfix** branch using the ad-hoc deployment scripts. **The deployment is only based on a commit ID**.
+The |userm-uvp| deploys the pipeline in the **valid** environment from the **hotfix** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy).
 
 .. danger::
 
    |dangertag|
 
+Launch the operational testing in |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
+
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step3-hotfix-deployvalid` and compare the results to ensure they are identical.
+
+- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step1-nominal-technical`.
 
 |step3-testvalid|
 ~~~~~~~~~~~~~~~~~
 
 The |userm-uvp| tests the |soft|.
-
-Launch the operational testing in Jenkins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-- The |userm-uvp| launches an analysis to generate the dataset that will be used as a reference.
-
-- In the dedicated project in |jenkins|_ named with the suffix **_VALID**, the |userm-uvp| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.), the reference dataset will be the dataset that has been validated.
-
-- The |userm-uvp| launches the  operational testing.
-
-- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step3-hotfix-corrections`.
 
 .. _step3-hotfix-corrections:
 
@@ -222,6 +268,8 @@ In most of the cases, the deployment in the **valid** environment is very simple
 - Once the code validated, the |userd| creates a :ref:`gitlab-merge-request` from the **hotfix-id\_version-user** branch on the **hotfix** branch using the template :download:`merge_request_template.md <data/templates/merge_request_templates/merge_request_template.md>`. The **Merge request** is assigned to a user with the **Maintainer** role.
 
 - The |userm-uvp| reviews and accepts the **Merge Request**.
+
+- In the Merge request, sets the name of the |gitlabmilestone| in the dedicated field.
 
 - The |userm-uvp| updates the **hotfix** branch from the |wks|:
 
@@ -265,58 +313,59 @@ It is likely that the local repository is not up-to-date anymore especially if a
    git pull
    git branch -vv
 
-- The |userm-uvp| creates an |gitlabissue| using the template :download:`deploy_in_prod_hotfix <data/templates/issue_templates/deploy_in_prod_hotfix.md>`
-
-  - The |gitlabissue| is labeled with |label_mep|.
-
-  - The |gitlabissue| number that has been used for the validation along with the |gitlabissue| number that describes the bug is added to the current |gitlabissue|.
-
-  - The |userm-uvp| tracks all the steps that are performed for the deployment in the production environment (including link or name of datasets that are used).
-
-  - The |userm-uvp| fills the |gitlabissue| at each step.
 
 .. _step4-hotfix-deployprod:
 
 |step4-deployprod|
 ~~~~~~~~~~~~~~~~~~
 
-The |userm-uvp| deploys the |soft| in the **prod** environment from the **hotfix** branch using the ad-hoc deployment scripts. **The deployement is only based on a commit ID**. The last commit ID from the **release** branch must be deployed.
+The |userm-uvp| deploys the |soft| in the **prod** environment from the **hotfix** branch using |gitlabci| (or ad-hoc deployment scripts using the commit ID to deploy).
 
 .. danger::
 
    |dangertag|
 
+|step4-newrelease|
+~~~~~~~~~~~~~~~~~~
 
-Launch the operational testing in Jenkins
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+The |userm-uvp| closes the milestone (see :ref:`step2-hotfix-milestone`) and issues related to the new version. Then, the |userm-uvp| creates a **New release** in |gitlab|:
 
-- The |userm-uvp| launches an analysis to generate the dataset that will be used as a reference.
+- Select the **Tag name** corresponding to the new release
 
-- In the dedicated project in |jenkins|_, the |userm-uvp| modifies the parameters of the operational testing (for example, a new reference dataset may be used for this purpose, etc.), the reference dataset will be the dataset that has been validated.
+- Fill in the **Release title** with the **version number** followed by free comments containing the keywork **hotfix**
 
-- The |userm-uvp| launches the operational testing.
+- Select the **Milestone** corresponding to the new release
 
-- If the operational testing fails (the |soft| does not work or is not reproducible), go back to the :ref:`step3-hotfix-corrections`.
+.. figure:: images/hotfix-gitlab-new-release.png
 
-Bring the content of  the hotfix branch into the master branch
+Schedule the operational testing in |gitlabci|
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- The |userm-ud| checks that the deployment with |gitlabci| is available for the |gitlab| repository. It requires the file ``.gitlab-ci.yml`` as defined in the template pipeline.
+
+- In the ``.gitlab-ci.yml`` file, the operational testing is implemented through different jobs which launch the pipeline twice during the :ref:`step4-hotfix-deployprod` and compare the results to ensure they are identical.
+
+- The |userm-ud| connects to |gitlab| to :ref:`gitlab-ci-optest-page` if it is not yet scheduled.
+
+Bring the content of  the hotfix branch into the main branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 - At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment.
 
-- The |userm-uvp| checkouts and updates the **master** branch:
+- The |userm-uvp| checkouts and updates the **main** branch:
 
 .. code-block:: bash
 
-   git checkout master
+   git checkout main
    git status # everything must be cleaned
    git pull
    git branch -vv
 
-- The |userm-uvp| brings the content of the **hotfix** into the **master** using the option  ``--no-ff`` to avoid the fast-forward mode. This option will produce a new commit ID with a specific message to describe and track the merge:
+- The |userm-uvp| brings the content of the **hotfix** into the **main** using the option  ``--no-ff`` to avoid the fast-forward mode. This option will produce a new commit ID with a specific message to describe and track the merge:
 
 .. code-block:: bash
 
-   git merge --no-ff hotfix`` # can be a bit verbose
+   git merge --no-ff hotfix # can be a bit verbose
    git status # must be cleaned
    git branch -vv
 
@@ -324,66 +373,24 @@ Bring the content of  the hotfix branch into the master branch
 
 ::
 
-  # On branch master
-  # Your **branch is ahead of 'origin/master' by** 113 commits.
+  # On branch main
+  # Your **branch is ahead of 'origin/main' by** 113 commits.
   # (use "git push" to publish your local commits)
   #
   # nothing to commit, working directory clean
-  *# On branch master*
+  *# On branch main*
 
 
 - The |userm-uvp| pushes the modifications on the |repo|:
 
 .. code-block:: bash
 
-   git push origin master
-
-Bring the content of the hotfix branch into the devel branch
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged on the **master** branch.
-
-- The |userm-uvp| checkouts and updates the **devel** branch:
-
-.. code-block:: bash
-
-   git checkout devel
-   git status # must be cleaned otherwise, commit or stash your modifications
-   git pull
-   git branch -vv
-
-- The |userm-uvp| brings the content of the **hotfix** branch into the **devel** branch:
-
-.. code-block:: bash
-
-   git merge --no-ff hotfix # may be a bit verbose
-   git status # may say something
-   git branch -vv
-
-- If the **devel** branch has been modified in the meantime, git will try to merge the modifications from the **hotfix** branch.
-
-- If some files cannot be merged automatically, they will appear to have **conflicts** in the output of the ``git status``:
-
-::
-
-  # On branch devel
-  # You have unmerged paths.
-  # (fix conflicts and run "git commit")...
-  # (use "git add ..." to mark resolution)
-  # both modified:build.xml
-
-- The conflicts have to be resolved manually. In that case, ask the help from the other developers.
-
-- The files with resolved conflicts must be added to the staging area, committed, and the merge must be sent on the |repo|:
-
-.. code-block:: bash
-
-   git push origin devel
+   git push origin main
 
 Bring the content of the hotfix branch into the release branch
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **master** and the **devel** branches.
+- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged with the **main** and the **devel** branches.
 
 - The |userm-uvp| checkouts and update the **release** branch:
 
@@ -422,12 +429,59 @@ Bring the content of the hotfix branch into the release branch
 
    git push origin release
 
-- The |userm-uvp| closes the |gitlabissue| |label_validation| and |gitlabissue| |label_mep| that have been opened.
+- The |userm-uvp| closes:
+
+  - all the GitLab issues which have been opened including the |label_validation|, the |label_mep|, and all issues related to the new version
+ 
+  - the milestone (see :ref:`step2-hotfix-milestone`).
+
+Bring the content of the hotfix branch into the devel branch
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+- At this stage, there is a stable code on the **hotfix** branch that has been tested, validated and successfully installed in the **prod** environment and merged on the **main** branch.
+
+- The |userm-uvp| checkouts and updates the **devel** branch:
+
+.. code-block:: bash
+
+   git checkout devel
+   git status # must be cleaned otherwise, commit or stash your modifications
+   git pull
+   git branch -vv
+
+- The |userm-uvp| brings the content of the **hotfix** branch into the **devel** branch:
+
+.. code-block:: bash
+
+   git merge --no-ff hotfix # may be a bit verbose
+   git status # may say something
+   git branch -vv
+
+- If the **devel** branch has been modified in the meantime, git will try to merge the modifications from the **hotfix** branch.
+
+- If some files cannot be merged automatically, they will appear to have **conflicts** in the output of the ``git status``:
+
+::
+
+  # On branch devel
+  # You have unmerged paths.
+  # (fix conflicts and run "git commit")...
+  # (use "git add ..." to mark resolution)
+  # both modified:build.xml
+
+- The conflicts have to be resolved manually. In that case, ask the help from the other developers.
+
+- The files with resolved conflicts must be added to the staging area, committed, and the merge must be sent on the |repo|:
+
+.. code-block:: bash
+
+   git push origin devel
+
 
 Back on the devel branch
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
-For security reason, the |userm-uvp| switches on the **devel** branch to avoid any risk of code modification on the **master** branch:
+For security reason, the |userm-uvp| switches on the **devel** branch to avoid any risk of code modification on the **main** branch:
 
 .. code-block:: bash
 

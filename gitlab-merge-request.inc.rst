@@ -1,6 +1,6 @@
 ..   This file is part of biogitflow
    
-     Copyright Institut Curie 2020-2021
+     Copyright Institut Curie 2020-2024
      
      This file is part of the biogitflow documentation.
      
@@ -19,6 +19,7 @@
 .. |MR-label| image:: images/MR_label.png
 .. |MR-removebranch| image:: images/MR_removebranch.png
 .. |MR-accept| image:: images/MR_accept.png
+.. |MR-milestone| image:: images/MR_milestone.png
 
 
 .. _gitlab-merge-request:
@@ -60,7 +61,15 @@ Add a label
 
 The default label in the Merge Request template is |label_bug|. Change it if needed:
 
+
 |MR-label|
+
+Link the Milestone
+------------------
+
+Whenever available, link the Merge Request to the relevant Milestone:
+
+|MR-milestone|
 
 Set the option to delete the branch after the merge
 ---------------------------------------------------
