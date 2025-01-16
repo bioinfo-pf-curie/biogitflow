@@ -1,3 +1,7 @@
+version-2.0.1
+2025-01-15
+    Make doc available in pdf format on readthedocs
+
 version-2.0.0
 2024-04-04
     Use milestone to track issues related to a new version
