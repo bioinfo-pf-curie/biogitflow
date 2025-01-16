@@ -22,8 +22,8 @@ conda:
 #  configuration: mkdocs.yml
 
 # Optionally build your docs in additional formats such as PDF
-## formats:
-##  - pdf
+formats:
+ - pdf
 
 ## python:
 ##   version: 3.8
